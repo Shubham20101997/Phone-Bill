@@ -48,38 +48,6 @@ int parselog(char input1[], char *opt[]){
 
  return 0;
 }
-/*
-int parseCalldurationAndNumber(char data[], char time[], char number[]){
-    int i=0;
-    int j=0;
-    int status = 0;
-
-    printf("Input: %s \n",data);
-    if(data == 0 || time == 0 || number == 0){
-            status = -1;
-            printf("Parse Call Duration status: %d: ",status);
-        return status;
-    }
-
-    while(data[i]!=','){
-        printf(" - %c ",data[i]);
-        time[i]=data[i];
-        i++;
-    }
-    printf("i=%d \n",i);
-    time[i] = '\0';
-    printf("Input time: %s \n",time);
-    i++;
-    while(data[i]!='\0'){
-        number[j]=data[i];
-        i++;
-        j++;
-    }
-    number[j] = '\0';
-
-    return status;
-}
-*/
 int parseCalldurationAndNumber(char input[],char *data[], char *time[], char *number[]){
     int i=0,index=0;
     int j=0,index_1=0;
@@ -117,7 +85,69 @@ int parseCalldurationAndNumber(char input[],char *data[], char *time[], char *nu
     }
      return 0;
 }
+int clenPhNo(char input[],char *in_ph[], char *out_ph[]){
+   // int count = 0;
+    int numberoflines=linenocount(input);
+    for (int i=0; i<numberoflines;i++){
+        int count=0;
+        for (int index=0; *(*(in_ph+i)+index) != '\0';index++){
 
+
+            if(*(*(in_ph+i)+index) != '-'){
+                *(*(out_ph+i)+count) = *(*(in_ph+i)+index);
+                count++;
+            }
+        }
+        *(*(out_ph+i)+count)='\0';
+    }
+    //out_ph[count++] = '\0';
+    return 0;
+}
+int parsetime(char input[],char *time[], char *hour[],char *minute[], char *second[]){
+    int index=0,count=0;
+    int numberoflines=linenocount(input);
+    for (int i=0;i<numberoflines;i++){
+        for (index=0;*(*(time+i)+index)!=':';index++){   //25:01:07,400-234-090\n00:05:01,400-234-090\n00:05:00,400-234-090
+            *(*(hour+i)+index)=*(*(time+i)+index);
+        }
+         *(*(hour+i)+index)='\0';
+    }
+    //count=0;
+    index++;
+    int j=index;
+    //printf("index:%d\n",index);
+    for (int i=0;i<numberoflines;i++){
+       // printf("%d\n",index);
+        index=j;
+        count=0;
+        while (*(*(time+i)+index)!=':'){
+            *(*(minute+i)+count)=*(*(time+i)+index);
+            count++;
+            index++;
+        }
+         *(*(minute+i)+count)='\0';
+        //count=0;
+    }
+    //count=0;
+    index++;
+    int k=index;
+    //printf("index:%d\n",index);
+    for (int i=0;i<numberoflines;i++){
+        //printf("%d\n",index);
+        index=k;
+        count=0;
+        while (*(*(time+i)+index)!='\0'){
+            *(*(second+i)+count)=*(*(time+i)+index);
+            count++;
+            index++;
+        }
+         *(*(second+i)+count)='\0';
+         //index=k;
+    }
+
+
+    return 0;
+}
 int linenocount(char input1[]){
     int i=0,counter=0;
     while (input1[i]!='\0'){
@@ -141,24 +171,55 @@ int main()
     //printf("Max Size: %d \n",count);
     char *time[count];
     char *num[count];
+    char *cleannum[count];
+    char *hr[3],*min[3],*sec[3];
     for(int i = 0; i < count; i++)
         oplog[i] =  (char *)malloc(20*sizeof(char));
     for(int i = 0; i < count; i++)
         time[i] =  (char *)malloc(20*sizeof(char));
     for(int i = 0; i < count; i++)
         num[i] =  (char *)malloc(20*sizeof(char));
+    for(int i = 0; i < count; i++)
+        cleannum[i] =  (char *)malloc(20*sizeof(char));
     parselog(input,oplog);
     for (int i=0; i<count;i++)
         printf("%d  log:%s\n",i+1,*(oplog+i));
     parseCalldurationAndNumber(input,oplog,time,num);
-
+    for(int i = 0; i < count; i++){
+        hr[i] =  (char *)malloc(3*sizeof(char));
+        min[i] =  (char *)malloc(3*sizeof(char));
+        sec[i] =  (char *)malloc(3*sizeof(char));
+    }
     for (int i=0;i<count;i++){
         printf("%d  time:%s\n",i+1,*(time+i));
 
     }
-     for (int i=0;i<count;i++){
+    for (int i=0;i<count;i++){
         printf("%d  num:%s\n",i+1,*(num+i));
 
+    }
+    clenPhNo(input,num,cleannum);
+    for (int i=0;i<count;i++){
+        printf("%d  clean num:%s\n",i+1,*(cleannum+i));
+
+    }
+    int numarr[count];
+    for (int i=0;i<count;i++){
+       numarr[i]=atoi(*(cleannum+i));
+    }
+    for (int i=0;i<count;i++){
+        printf("array:%d\n",numarr[i]);
+    }
+    parsetime(input,time,hr,min,sec);
+    for (int i=0;i<count;i++){
+        printf("hour:%s,min:%s,sec:%s\n",*(hr+i),*(min+i),*(sec+i));
+    }
+    int timearr[count];
+    for (int i=0; i<count;i++){
+        timearr[i]=atoi(*(hr+i))*3600+atoi(*(min+i))*60+atoi(*(sec+i));
+    }
+    for (int i=0;i<count;i++){
+        printf("time %d: %d\n",i+1,timearr[i]);
     }
     return 0;
 }
