@@ -165,7 +165,7 @@ int linenocount(char input1[]){
 int main()
 {
     //printf("Hello world!\n");
-    char input[]="25:01:07,400-234-090\n00:05:01,400-234-090\n00:05:00,400-234-090";
+    char input[]="25:01:07,400-234-092\n00:05:01,400-234-090\n00:05:00,400-234-090";
     int count=linenocount(input);
     char *oplog[count];
     //printf("Max Size: %d \n",count);
@@ -221,5 +221,29 @@ int main()
     for (int i=0;i<count;i++){
         printf("time %d: %d\n",i+1,timearr[i]);
     }
+    int n;
+    n=sizeof(numarr)/sizeof(numarr[0]);
+    for (int i=0;i<n;i++){
+        for (int j=i+1;j<n;){
+            if (numarr[i]==numarr[j]){
+                timearr[i]=timearr[i]+timearr[j];
+                for (int k=j;k<n;k++){
+                    numarr[k]=numarr[k+1];
+                    timearr[k]=timearr[k+1];
+                }
+                n--;
+            }
+            else{
+                j++;
+            }
+        }
+    }
+    for (int i=0;i<n;i++){
+        printf("New array: %d\n",numarr[i]);
+    }
+    for (int i=0;i<n;i++){
+        printf("time array:%d\n",timearr[i]);
+    }
+
     return 0;
 }
