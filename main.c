@@ -192,7 +192,7 @@ int charges(int timesec[],int bill[]){
 int main()
 {
     //printf("Hello world!\n");
-    char input[]="25:01:07,400-234-090\n00:05:01,701-080-080\n00:05:00,400-234-090";
+    char input[]="25:01:07,400-234-090\n00:05:01,400-234-090\n00:05:00,400-234-090";
     int count=linenocount(input);
     char *oplog[count];
     //printf("Max Size: %d \n",count);
@@ -268,14 +268,27 @@ int main()
     for (int i=0;i<n;i++){
         printf("New array: %d\n",numarr[i]);
     }
-    /*
+
     for (int i=0;i<n;i++){
         printf("time array:%d\n",timearr[i]);
     }
-    */
+    for (int i=0;i<n;i++){
+        for (int j=i+1;j<n;){
+            if (timearr[i]==timearr[j]){
+                for(int k=0;k<n;k++){
+                    timearr[k]=timearr[k+1];
+                }
+                n--;
+            }
+            else{
+                j++;
+            }
+        }
+    }
     int timearrnew[n-1];
     int bill[n-1];
     bubblesort(timearr,n);
+
     for (int i=0;i<n;i++){
         printf("time array:%d\n",timearr[i]);
     }
@@ -283,12 +296,16 @@ int main()
         timearrnew[i]=timearr[i];
         printf("Billable time:%d\n",timearrnew[i]);
     }
+    int sum=0;
     if (n>1){
         charges(timearrnew,bill);
         for (int i=0;i<n-1;i++){
         //timearrnew[i]=timearr[i];
-            printf("Bill:%d\n",bill[i]);
+            //int sum;
+            sum=sum+bill[i];
+           // printf("Bill:%d\n",sum);
         }
+         printf("Bill:%d\n",sum);
     }
 
     else {
