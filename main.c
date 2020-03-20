@@ -158,14 +158,41 @@ int linenocount(char input1[]){
     }
     return counter+1;
 }
+int bubblesort(int arr[],int n){
+    int i=0,j=0;
+    for (i=0;i<n-1;i++){
+        for (j=0;j<n-i-1;j++){
+            if (arr[j]>arr[j+1]){
+                swap(&arr[j],&arr[j+1]);
+            }
+        }
+    }
+    return 0;
 
+}
+int charges(int timesec[],int bill[]){
+    int size=sizeof(timesec)/sizeof(timesec[0]);
+   // int bill[size];
+    for (int i=0;i<size;i++){
+        if (timesec[i]<300){
+            bill[i]=timesec[i]*3;
+        }
+        else if(timesec[i]>=300){
+            if (timesec[i]%60!=0){
+                bill[i]=((timesec[i]/60)+1)*150;
+            }
 
-
-
+            else{
+                bill[i]=(timesec[i]/60)*150;
+            }
+        }
+    }
+    return 0;
+}
 int main()
 {
     //printf("Hello world!\n");
-    char input[]="25:01:07,400-234-092\n00:05:01,400-234-090\n00:05:00,400-234-090";
+    char input[]="25:01:07,400-234-090\n00:05:01,701-080-080\n00:05:00,400-234-090";
     int count=linenocount(input);
     char *oplog[count];
     //printf("Max Size: %d \n",count);
@@ -241,9 +268,35 @@ int main()
     for (int i=0;i<n;i++){
         printf("New array: %d\n",numarr[i]);
     }
+    /*
     for (int i=0;i<n;i++){
         printf("time array:%d\n",timearr[i]);
     }
+    */
+    int timearrnew[n-1];
+    int bill[n-1];
+    bubblesort(timearr,n);
+    for (int i=0;i<n;i++){
+        printf("time array:%d\n",timearr[i]);
+    }
+    for (int i=0;i<n-1;i++){
+        timearrnew[i]=timearr[i];
+        printf("Billable time:%d\n",timearrnew[i]);
+    }
+    if (n>1){
+        charges(timearrnew,bill);
+        for (int i=0;i<n-1;i++){
+        //timearrnew[i]=timearr[i];
+            printf("Bill:%d\n",bill[i]);
+        }
+    }
+
+    else {
+        int i=0;
+        bill[i]=0;
+        printf("Bill:%d\n",bill[i]);
+    }
+
 
     return 0;
 }
