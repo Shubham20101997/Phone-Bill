@@ -9,6 +9,7 @@ int swap(int *a , int *b){
     *b=c;
     return 0;
 }
+/*
 int parselog(char input1[], char *opt[]){
     int i=0;
     //int y;
@@ -47,7 +48,7 @@ int parselog(char input1[], char *opt[]){
     *(*(opt+2)+index)='\0';
 
  return 0;
-}
+}*/
 //00:01:07,400-234-093\n00:05:00,400-234-091\n00:05:00,400-234-090
 int parselog_1(char input1[],char *opt[]){
     int j=0,i=0;
@@ -215,8 +216,9 @@ int bubblesort(int arr[],int n){
     return 0;
 
 }
-int charges(int timesec[],int bill[]){
-    int size=sizeof(timesec)/sizeof(timesec[0]);
+int charges(int size, int timesec[],int bill[]){
+    //int size=sizeof(timesec)/sizeof(timesec[0]);
+    printf("size is :%d",size);
    // int bill[size];
     int sum=0;
     for (int i=0;i<size;i++){
@@ -233,21 +235,23 @@ int charges(int timesec[],int bill[]){
             }
         }
         sum=sum+bill[i];
+
     }
+    //printf("sum is:%d",sum);
 
     return sum;
 }
 int main()
 {
     //printf("Hello world!\n");
-    char input[]="00:01:07,400-234-093\n00:05:00,400-234-091\n00:05:00,400-234-090";
+    char input[]="00:01:07,400-234-090\n00:05:01,701-080-080\n00:05:00,400-234-090\n00:01:07,400-234-082\n00:04:00,400-234-082\n00:01:00,400-234-082\n00:01:07,400-234-091\n00:05:00,400-234-091";
     int count=linenocount(input);
     char *oplog[count];
     printf("Max Size: %d \n",count);
     char *time[count];
     char *num[count];
     char *cleannum[count];
-    char *hr[3],*min[3],*sec[3];
+    char *hr[count],*min[count],*sec[count];
     for(int i = 0; i < count; i++)
         oplog[i] =  (char *)malloc(20*sizeof(char));
     for(int i = 0; i < count; i++)
@@ -353,10 +357,10 @@ int main()
         timearrnew[i]=timearr[i];
         printf("Billable time:%d\n",timearrnew[i]);
     }
-
+    int m=sizeof(timearrnew)/sizeof(timearrnew[0]);
     int sum=0;
     if (n>1){
-        int charge=charges(timearrnew,bill);
+        int charge=charges(m,timearrnew,bill);
         printf("Bill:%d\n",charge);
         }
         //printf("Bill:%d\n",charge);
