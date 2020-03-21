@@ -9,46 +9,8 @@ int swap(int *a , int *b){
     *b=c;
     return 0;
 }
-/*
-int parselog(char input1[], char *opt[]){
-    int i=0;
-    //int y;
-    //"25:01:07,400-234-090\n00:05:01,400-234-090\n00:05:00,400-234-090";
-    int count=0,index=0;
-    while (input1[i]!='\0'){
 
-        if (input1[i]=='\n'){
-            count++;
-            index=0;
-            i++;
-            //printf("End count %d -- i %d \n",index, i);
-        }
-        if (count==0){
-           // printf("First Char: %c \n",input1[i]);
-            *(*(opt+0)+index)=input1[i];
-            //printf("%c 1 - index %d  %d-----%c \n",input1[i],index,i,*(*(opt+0)+index));
-        }
-        if (count==1){
-            //printf("2nd Char: %c \n",input1[i]);
-            *(*(opt+1)+index)=input1[i]; // == ans =
-            //printf("%c 2 - index %d  %d-----%c \n",input1[i],index,i,*(*(opt+1)+index));
-        }
-        if (count==2){
-           // printf("3rd Char: %c \n",input1[i]);
-            *(*(opt+2)+index)=input1[i];
-            //printf("%c 3  - index %d  %d----%c \n",input1[i],index,i,*(*(opt+2)+index));
-        }
 
-        index++;
-        i++;
-    }
-    //printf("End count %d \n",index);
-    *(*(opt+0)+index)='\0';
-    *(*(opt+1)+index)='\0';
-    *(*(opt+2)+index)='\0';
-
- return 0;
-}*/
 //00:01:07,400-234-093\n00:05:00,400-234-091\n00:05:00,400-234-090
 int parselog_1(char input1[],char *opt[]){
     int j=0,i=0;
@@ -218,7 +180,7 @@ int bubblesort(int arr[],int n){
 }
 int charges(int size, int timesec[],int bill[]){
     //int size=sizeof(timesec)/sizeof(timesec[0]);
-    printf("size is :%d",size);
+    //printf("size is :%d",size);
    // int bill[size];
     int sum=0;
     for (int i=0;i<size;i++){
@@ -247,7 +209,7 @@ int main()
     char input[]="00:01:07,400-234-090\n00:05:01,701-080-080\n00:05:00,400-234-090\n00:01:07,400-234-082\n00:04:00,400-234-082\n00:01:00,400-234-082\n00:01:07,400-234-091\n00:05:00,400-234-091";
     int count=linenocount(input);
     char *oplog[count];
-    printf("Max Size: %d \n",count);
+    //printf("Max Size: %d \n",count);
     char *time[count];
     char *num[count];
     char *cleannum[count];
@@ -263,7 +225,7 @@ int main()
     //parselog(input,oplog);
     //for (int i=0; i<count;i++)
         //printf("%d  log:%s\n",i+1,*(oplog+i));
-    printf("New Function....\n");
+   // printf("New Function....\n");
     parselog_1(input,oplog);
      for (int i=0; i<count;i++)
         printf("%d  new log:%s\n",i+1,*(oplog+i));
@@ -273,17 +235,17 @@ int main()
         min[i] =  (char *)malloc(3*sizeof(char));
         sec[i] =  (char *)malloc(3*sizeof(char));
     }
-    for (int i=0;i<count;i++){
-        printf("%d  time:%s\n",i+1,*(time+i));
+    //for (int i=0;i<count;i++){
+        //printf("%d  time:%s\n",i+1,*(time+i));
 
-    }
-    for (int i=0;i<count;i++){
-        printf("%d  num:%s\n",i+1,*(num+i));
+   // }
+   // for (int i=0;i<count;i++){
+       // printf("%d  num:%s\n",i+1,*(num+i));
 
-    }
+    //}
     clenPhNo(input,num,cleannum);
     for (int i=0;i<count;i++){
-        printf("%d  clean num:%s\n",i+1,*(cleannum+i));
+       // printf("%d  clean num:%s\n",i+1,*(cleannum+i));
 
     }
     int numarr[count];
@@ -291,18 +253,18 @@ int main()
        numarr[i]=atoi(*(cleannum+i));
     }
     for (int i=0;i<count;i++){
-        printf("array:%d\n",numarr[i]);
+       // printf("array:%d\n",numarr[i]);
     }
     parsetime(input,time,hr,min,sec);
     for (int i=0;i<count;i++){
-        printf("hour:%s,min:%s,sec:%s\n",*(hr+i),*(min+i),*(sec+i));
+        //printf("hour:%s,min:%s,sec:%s\n",*(hr+i),*(min+i),*(sec+i));
     }
     int timearr[count];
     for (int i=0; i<count;i++){
         timearr[i]=atoi(*(hr+i))*3600+atoi(*(min+i))*60+atoi(*(sec+i));
     }
     for (int i=0;i<count;i++){
-        printf("time %d: %d\n",i+1,timearr[i]);
+       // printf("time %d: %d\n",i+1,timearr[i]);
     }
     int n;
     n=sizeof(numarr)/sizeof(numarr[0]);
@@ -322,11 +284,11 @@ int main()
         }
     }
     for (int i=0;i<n;i++){
-        printf("New array: %d\n",numarr[i]);
+       // printf("New array: %d\n",numarr[i]);
     }
 
     for (int i=0;i<n;i++){
-        printf("time array:%d\n",timearr[i]);
+       // printf("time array:%d\n",timearr[i]);
     }
 
     int timearrnew[n-1];
@@ -355,7 +317,7 @@ int main()
     }*/
     for (int i=0;i<n-1;i++){
         timearrnew[i]=timearr[i];
-        printf("Billable time:%d\n",timearrnew[i]);
+       // printf("Billable time:%d\n",timearrnew[i]);
     }
     int m=sizeof(timearrnew)/sizeof(timearrnew[0]);
     int sum=0;
@@ -363,7 +325,7 @@ int main()
         int charge=charges(m,timearrnew,bill);
         printf("Bill:%d\n",charge);
         }
-        //printf("Bill:%d\n",charge);
+       // printf("Bill:%d\n",charge);
         else {
             int i=0;
             bill[i]=0;
