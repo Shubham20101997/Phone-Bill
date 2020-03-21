@@ -48,6 +48,51 @@ int parselog(char input1[], char *opt[]){
 
  return 0;
 }
+//00:01:07,400-234-093\n00:05:00,400-234-091\n00:05:00,400-234-090
+int parselog_1(char input1[],char *opt[]){
+    int j=0,i=0;
+    int index=0;
+    int nooflines=linenocount(input1);
+    /*
+     for ( i=0;input1[i]!='\0';i++){
+
+            if(input1[i]=='\n'){
+                *(*(opt+j)+index)='\0';
+                printf("before -: %s -- i:%d - j:%d \n",*(opt+j),i,j);
+                index = 0;
+                i++;
+                j++;
+                printf("after -: %s -- i:%d - j:%d \n",*(opt+j),i,j);
+            }else if(input1[i]=='\0'){
+                *(*(opt+j)+index)='\0';
+                printf("before -: %s -- i:%d - j:%d \n",*(opt+j),i,j);
+            }else{
+                *(*(opt+j)+index)=input1[i];
+            }
+            index++;
+     }
+    */
+
+
+    for ( i=0;i<nooflines;i++){
+
+        for (j=0;input1[j]!='\n';j++){
+            *(*(opt+i)+j)=input1[index];
+            index++;
+           // printf("%c %d - index %d  %d-----%c\n",input1[i],i,index,j,*(*(opt+i)+j));
+        }
+        //printf("After each line index value: %d \n",index);
+        if (input1[index]=='\n'|| input1[index]=='\0'){
+            index++;
+            *(*(opt+i)+j)='\0';
+            //printf("%d -- j: %d -- \n%s \n",index,j, *(opt+i));
+        }
+    }
+
+
+    return 0;
+
+}
 int parseCalldurationAndNumber(char input[],char *data[], char *time[], char *number[]){
     int i=0,index=0;
     int j=0,index_1=0;
@@ -173,11 +218,12 @@ int bubblesort(int arr[],int n){
 int charges(int timesec[],int bill[]){
     int size=sizeof(timesec)/sizeof(timesec[0]);
    // int bill[size];
+    int sum=0;
     for (int i=0;i<size;i++){
         if (timesec[i]<300){
             bill[i]=timesec[i]*3;
         }
-        else if(timesec[i]>=300){
+        else {
             if (timesec[i]%60!=0){
                 bill[i]=((timesec[i]/60)+1)*150;
             }
@@ -186,16 +232,18 @@ int charges(int timesec[],int bill[]){
                 bill[i]=(timesec[i]/60)*150;
             }
         }
+        sum=sum+bill[i];
     }
-    return 0;
+
+    return sum;
 }
 int main()
 {
     //printf("Hello world!\n");
-    char input[]="25:01:07,400-234-090\n00:05:01,400-234-090\n00:05:00,400-234-090";
+    char input[]="00:01:07,400-234-093\n00:05:00,400-234-091\n00:05:00,400-234-090";
     int count=linenocount(input);
     char *oplog[count];
-    //printf("Max Size: %d \n",count);
+    printf("Max Size: %d \n",count);
     char *time[count];
     char *num[count];
     char *cleannum[count];
@@ -208,9 +256,13 @@ int main()
         num[i] =  (char *)malloc(20*sizeof(char));
     for(int i = 0; i < count; i++)
         cleannum[i] =  (char *)malloc(20*sizeof(char));
-    parselog(input,oplog);
-    for (int i=0; i<count;i++)
-        printf("%d  log:%s\n",i+1,*(oplog+i));
+    //parselog(input,oplog);
+    //for (int i=0; i<count;i++)
+        //printf("%d  log:%s\n",i+1,*(oplog+i));
+    printf("New Function....\n");
+    parselog_1(input,oplog);
+     for (int i=0; i<count;i++)
+        printf("%d  new log:%s\n",i+1,*(oplog+i));
     parseCalldurationAndNumber(input,oplog,time,num);
     for(int i = 0; i < count; i++){
         hr[i] =  (char *)malloc(3*sizeof(char));
@@ -272,48 +324,49 @@ int main()
     for (int i=0;i<n;i++){
         printf("time array:%d\n",timearr[i]);
     }
-    for (int i=0;i<n;i++){
-        for (int j=i+1;j<n;){
-            if (timearr[i]==timearr[j]){
-                for(int k=0;k<n;k++){
-                    timearr[k]=timearr[k+1];
-                }
-                n--;
-            }
-            else{
-                j++;
-            }
-        }
-    }
+
     int timearrnew[n-1];
     int bill[n-1];
     bubblesort(timearr,n);
+    /*
+    if (timearr[n-1]==timearr[n-2]){
+        for (int i=0;i<n-1;i++){
+            timearrnew[i]=timearr[i];
+        }
+        int sum=0;
+        int bill_1[n-1];
+        charges(timearrnew,bill_1);
+        for (int i=0;i<n-1;i++){
+        //timearrnew[i]=timearr[i];
+            //int sum;
+            sum=sum+bill_1[i];
+           // printf("Bill:%d\n",sum);
+        }
+            printf("Bill:%d\n",sum);
+    }
+    //printf("Bill:%d\n",sum);
 
     for (int i=0;i<n;i++){
         printf("time array:%d\n",timearr[i]);
-    }
+    }*/
     for (int i=0;i<n-1;i++){
         timearrnew[i]=timearr[i];
         printf("Billable time:%d\n",timearrnew[i]);
     }
+
     int sum=0;
     if (n>1){
-        charges(timearrnew,bill);
-        for (int i=0;i<n-1;i++){
-        //timearrnew[i]=timearr[i];
-            //int sum;
-            sum=sum+bill[i];
-           // printf("Bill:%d\n",sum);
+        int charge=charges(timearrnew,bill);
+        printf("Bill:%d\n",charge);
         }
-         printf("Bill:%d\n",sum);
+        //printf("Bill:%d\n",charge);
+        else {
+            int i=0;
+            bill[i]=0;
+            printf("Bill:%d\n",bill[i]);
+        }
+        return 0;
     }
 
-    else {
-        int i=0;
-        bill[i]=0;
-        printf("Bill:%d\n",bill[i]);
-    }
 
 
-    return 0;
-}
